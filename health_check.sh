@@ -1,5 +1,17 @@
 #!/bin/bash
 
-echo "Hello from shell script"
+echo "Running service script check..."
 
-exit 0 # exit status 1 means that the script "fails"
+URL_CURL_CHECK="https://late-moon-9703.fly.dev/health"
+
+VAR_RESPONSE=$(curl -s $URL_CURL_CHECK)
+
+echo "Reponse:$VAR_RESPONSE"
+
+if [ $VAR_RESPONSE = ok ]; then
+  echo "success"
+  exit 0
+else
+  echo "fail"
+  exit 1
+fi
