@@ -50,7 +50,7 @@ jobs:
         if: ${{ success() && steps.fly.conclusion == 'success'}}
         with:
           severity: info
-          description: to https://late-moon-9703.fly.dev/ by ${{ github.event.commits.[0].committer.username }}
+          description: to https://late-moon-9703.fly.dev/ by ${{ github.event.commits[0].committer.username }}
           text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
