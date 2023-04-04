@@ -40,16 +40,18 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: fly.io deployment
+        id: fly
         if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip' ) }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: discord fly deployment
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ success() }}
+        if: ${{ success() && steps.fly.conclusion == 'success'}}
         with:
           severity: info
-          details: Deployment succeeded!
+          description: to https://late-moon-9703.fly.dev/
+          text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     needs: [simple_deployment_pipeline]
